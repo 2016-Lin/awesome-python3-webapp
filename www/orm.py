@@ -37,6 +37,7 @@ async def select(sql,args,size=None):
             logging.info("rows returned: %s " % len(rs))
             return rs
 
+#通用execute的方法，因为insert,update,delete,会对行产生影响，并且参数相同
 async def execute(sql,args,autocommit=True):
     log(sql)
     async with __pool.get() as conn:
@@ -54,12 +55,12 @@ async def execute(sql,args,autocommit=True):
             raise
         return affected
 
+
 def create_args_string(num):
     L = []
     for n in range(num):
         L.append("?")
     return ", ".join(L)
-
 class Field(object):
 
     def __init__(self,name,column_type,primary_key,default):
